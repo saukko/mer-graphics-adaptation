@@ -1,0 +1,118 @@
+Name: mer-graphics-adaptation
+Summary: Graphics adaptation for %{adaptation_name}
+Version: 0.1.0
+Release: 1
+Group: Graphics/Display and Graphics Adaptation
+License: XYZ Proprietary
+Sources:
+   # Add your own tarball here that contains the 
+   # desired binaries
+   - "binary-blobs-%{version}.tar.bz2"
+
+Macros:
+   # Common part of the descriptions.
+   - adaptation_name; sample
+   # Because graphics drivers are usually binary blobs
+   # we do not want to create debug packages for them.
+   - debug_package; %{nil}
+
+Description: |
+  %{summary}.
+
+Configure: none
+Builder: none
+
+# The graphics adaptation is often a binary blob that is only for 
+# certain architecture, thus we need to limit here which architecture
+# the rpm's are created. 
+#
+# Some example values:
+#   - "%{arm} armv8el"
+#   - "%{ix86}"
+#
+# ExclusiveArch: "%{arm} armv8el"
+
+# Add requirements for the binaries if there are any.
+# Requires:
+#     - coreutils 
+
+SubPackages:
+    - Name: devel
+      Summary: Development files for %{adaptation_name}
+      Group: Development/Libraries
+      Description: |
+          %{summary}
+
+    - Name: libEGL
+      Summary: EGL library for %{adaptation_name}
+      Group: Development/Libraries
+      Description: | 
+          %{summary}
+      Provides:
+           - libEGL
+           - libEGL.so.1
+      Files:
+           - "%{_libdir}/libEGL.so.1"
+
+    - Name: libEGL-devel
+      Summary: EGL development headers for %{adaptation_name}
+      Group: Development/Libraries
+      Description: | 
+          %{summary}
+      Requires:
+           - "%{name}-libEGL = %{version}-%{release}"
+           - "%{name}-devel = %{version}-%{release}"
+      Provides:
+           - libEGL-devel
+      Files:
+           - "%{_includedir}/KHR/*.h"
+           - "%{_includedir}/EGL/*.h"
+
+    - Name: libGLESv1
+      Summary: GLESv1 library for %{adaptation_name}
+      Group: Development/Libraries
+      Description: | 
+          %{summary}
+      Provides:
+           - libGLESv1
+           - libGLES_CM.so.1
+      Files:
+           - "%{_libdir}/libGLES_CM.so.1"
+
+    - Name: libGLESv1-devel
+      Summary: GLESv1 development headers for %{adaptation_name}
+      Group: Development/Libraries
+      Description: | 
+          %{summary}
+      Requires:
+           - "%{name}-libGLESv1 = %{version}-%{release}"
+           - "%{name}-devel = %{version}-%{release}"
+      Provides:
+           - libGLESv1-devel
+      Files:
+           - "%{_includedir}/GLES/*.h"
+
+    - Name: libGLESv2
+      Summary: GLESv2 library for %{adaptation_name}
+      Group: Development/Libraries
+      Description: | 
+          %{summary}
+      Provides:
+           - libGLESv2
+           - libGLESv2.so.2
+      Files:
+           - "%{_libdir}/libGLESv2.so.2"
+
+    - Name: libGLESv2-devel
+      Summary: GLESv2 library development headers for %{adaptation_name}
+      Group: Development/Libraries
+      Description: | 
+          %{summary}
+      Requires:
+           - "%{name}-libGLESv2 = %{version}-%{release}"
+           - "%{name}-devel = %{version}-%{release}"
+      Provides:
+           - libGLESv2-devel
+      Files:
+           - "%{_includedir}/GLES2/*.h"
+
